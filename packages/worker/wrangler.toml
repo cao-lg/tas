@@ -1,0 +1,19 @@
+name = "tas-worker"
+main = "src/index.ts"
+compatibility_date = "2024-04-05"
+
+[[d1_databases]]
+binding = "DB"
+database_name = "tas-db"
+database_id = "YOUR_D1_DATABASE_ID"
+
+[[kv_namespaces]]
+binding = "KV"
+id = "YOUR_KV_NAMESPACE_ID"
+
+[vars]
+ENVIRONMENT = "production"
+JWT_SECRET = "YOUR_JWT_SECRET_KEY"
+
+[observability]
+enabled = true

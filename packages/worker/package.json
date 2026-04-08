@@ -1,0 +1,24 @@
+{
+  "name": "@tas/worker",
+  "version": "1.0.0",
+  "main": "./src/index.ts",
+  "scripts": {
+    "dev": "wrangler dev",
+    "build": "wrangler deploy --dry-run",
+    "deploy": "wrangler deploy",
+    "db:migrate": "wrangler d1 migrations apply tas-db",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@tas/shared": "*",
+    "hono": "^4.3.0",
+    "bcryptjs": "^2.4.3",
+    "jose": "^5.3.0"
+  },
+  "devDependencies": {
+    "@cloudflare/workers-types": "^4.20240405.0",
+    "@types/bcryptjs": "^2.4.6",
+    "typescript": "^5.4.5",
+    "wrangler": "^3.52.0"
+  }
+}

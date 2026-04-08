@@ -1,0 +1,25 @@
+{
+  "name": "teaching-auth-system",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Teaching Auth System (TAS) - 通用用户管理系统",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {
+    "dev": "concurrently \"npm run dev:worker\" \"npm run dev:frontend\"",
+    "dev:worker": "npm run dev -w @tas/worker",
+    "dev:frontend": "npm run dev -w @tas/frontend",
+    "build": "npm run build -w @tas/shared && npm run build -w @tas/worker && npm run build -w @tas/frontend",
+    "build:worker": "npm run build -w @tas/worker",
+    "build:frontend": "npm run build -w @tas/frontend",
+    "deploy:worker": "npm run deploy -w @tas/worker",
+    "deploy:frontend": "npm run deploy -w @tas/frontend",
+    "db:migrate": "npm run db:migrate -w @tas/worker",
+    "typecheck": "npm run typecheck -ws"
+  },
+  "devDependencies": {
+    "concurrently": "^8.2.2",
+    "typescript": "^5.4.5"
+  }
+}
