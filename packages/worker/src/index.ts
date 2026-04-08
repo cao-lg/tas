@@ -39,4 +39,4 @@ app.onError((err, c) => {
   return c.json({ success: false, error: '服务器内部错误' }, 500);
 });
 
-export default app;
+export default app.fetch;
