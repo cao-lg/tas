@@ -5,15 +5,15 @@ compatibility_date = "2024-04-05"
 [[d1_databases]]
 binding = "DB"
 database_name = "tas-db"
-database_id = "YOUR_D1_DATABASE_ID"
+database_id = "d0a4dba7-9696-4199-94c0-0c19a36e1635"
 
 [[kv_namespaces]]
 binding = "KV"
-id = "YOUR_KV_NAMESPACE_ID"
+id = "f9389fe6867f4e7eaa8c7d0770503cfc"
 
 [vars]
 ENVIRONMENT = "production"
-JWT_SECRET = "YOUR_JWT_SECRET_KEY"
+JWT_SECRET = "70d50176ad65b581483a36d02496e152b3d2f570928af2ffa14d4308ba46b7e6"
 
 [observability]
 enabled = true
