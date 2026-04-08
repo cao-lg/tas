@@ -306,6 +306,21 @@ export default function Apps() {
             
             <div className="space-y-4">
               <div className="p-4 bg-gray-50 rounded-lg">
+                <label className="block text-sm font-medium text-gray-700 mb-1">App ID</label>
+                <div className="flex items-center gap-2">
+                  <code className="flex-1 bg-white px-3 py-2 rounded font-mono text-sm break-all">
+                    {selectedApp.id}
+                  </code>
+                  <button
+                    onClick={() => copyToClipboard(selectedApp.id, 'App ID')}
+                    className="btn btn-secondary text-sm"
+                  >
+                    复制
+                  </button>
+                </div>
+              </div>
+              
+              <div className="p-4 bg-gray-50 rounded-lg">
                 <label className="block text-sm font-medium text-gray-700 mb-1">App Key</label>
                 <div className="flex items-center gap-2">
                   <code className="flex-1 bg-white px-3 py-2 rounded font-mono text-sm break-all">

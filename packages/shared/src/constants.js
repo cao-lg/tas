@@ -1,0 +1,13 @@
+export const USER_ROLES = ['admin', 'teacher', 'student'];
+export const USER_STATUSES = ['active', 'inactive', 'banned'];
+export const CLASS_MEMBER_ROLES = ['teacher', 'student', 'assistant'];
+export const APP_STATUSES = ['active', 'inactive'];
+export const JWT_EXPIRY_DAYS = 7;
+export const JWT_EXPIRY_SECONDS = JWT_EXPIRY_DAYS * 24 * 60 * 60;
+export const CLASS_CODE_LENGTH = 6;
+export const APP_KEY_LENGTH = 16;
+export const APP_SECRET_LENGTH = 32;
+export const DEFAULT_PAGE_SIZE = 20;
+export const MAX_PAGE_SIZE = 100;
+export const BCRYPT_COST = 10;
+//# sourceMappingURL=constants.js.map
