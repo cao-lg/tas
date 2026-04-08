@@ -5,7 +5,11 @@
     "rootDir": "./src",
     "lib": ["ES2022", "DOM", "DOM.Iterable"],
     "jsx": "react-jsx",
-    "moduleResolution": "bundler"
+    "moduleResolution": "bundler",
+    "baseUrl": ".",
+    "paths": {
+      "@tas/shared": ["../shared/src"]
+    }
   },
   "include": ["src/**/*"]
 }
