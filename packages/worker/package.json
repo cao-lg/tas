@@ -4,8 +4,8 @@
   "main": "./src/index.ts",
   "scripts": {
     "dev": "wrangler dev",
-    "build": "wrangler deploy --dry-run",
-    "deploy": "wrangler deploy",
+    "build": "npm run build -w @tas/shared && wrangler deploy --dry-run",
+    "deploy": "npm run build -w @tas/shared && wrangler deploy",
     "db:migrate": "wrangler d1 migrations apply tas-db",
     "typecheck": "tsc --noEmit"
   },
