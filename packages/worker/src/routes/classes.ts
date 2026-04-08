@@ -16,9 +16,10 @@ import {
   createUser
 } from '../db';
 import { authMiddleware, getAuthUser, requireRole } from '../middleware/auth';
-import { generateId, generateClassCode, CLASS_CODE_LENGTH, type ApiResponse, type CreateClassRequest, type UpdateClassRequest, type AddClassMemberRequest, type BatchImportStudentRequest, type BatchImportStudentResult } from '@tas/shared';
+import { generateId, generateClassCode, isValidEmail, isValidUsername, isValidPassword } from '../utils/shared/utils';
+import { CLASS_CODE_LENGTH } from '../utils/shared/constants';
+import type { ApiResponse, CreateClassRequest, UpdateClassRequest, AddClassMemberRequest, BatchImportStudentRequest, BatchImportStudentResult } from '../utils/shared/api';
 import { hashPassword } from '../utils/password';
-import { isValidEmail, isValidUsername, isValidPassword } from '@tas/shared';
 
 const classes = new Hono<{ Bindings: Env }>();
 

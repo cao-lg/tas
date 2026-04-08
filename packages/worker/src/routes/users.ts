@@ -3,7 +3,9 @@ import type { Env } from '../env';
 import { findUserById, updateUser, listUsers } from '../db';
 import { authMiddleware, getAuthUser, requireRole } from '../middleware/auth';
 import { hashPassword, verifyPassword } from '../utils/password';
-import { generateRandomPassword, DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE, type ApiResponse, type UpdateUserRequest, type ChangePasswordRequest, type UserListQuery, type PaginatedResponse } from '@tas/shared';
+import { generateRandomPassword } from '../utils/shared/utils';
+import { DEFAULT_PAGE_SIZE, MAX_PAGE_SIZE } from '../utils/shared/constants';
+import type { ApiResponse, UpdateUserRequest, ChangePasswordRequest, UserListQuery, PaginatedResponse } from '../utils/shared/api';
 
 const users = new Hono<{ Bindings: Env }>();
 

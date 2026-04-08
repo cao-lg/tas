@@ -11,7 +11,9 @@ import {
 } from '../db';
 import { authMiddleware, getAuthUser, requireRole } from '../middleware/auth';
 import { verifyToken, checkSession } from '../utils/jwt';
-import { generateId, generateAppKey, generateAppSecret, APP_KEY_LENGTH, APP_SECRET_LENGTH, type ApiResponse, type CreateAppRequest, type UpdateAppRequest } from '@tas/shared';
+import { generateId, generateAppKey, generateAppSecret } from '../utils/shared/utils';
+import { APP_KEY_LENGTH, APP_SECRET_LENGTH } from '../utils/shared/constants';
+import type { ApiResponse, CreateAppRequest, UpdateAppRequest } from '../utils/shared/api';
 
 const apps = new Hono<{ Bindings: Env }>();
 

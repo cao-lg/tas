@@ -1,5 +1,5 @@
 import bcrypt from 'bcryptjs';
-import { BCRYPT_COST } from '@tas/shared';
+import { BCRYPT_COST } from './shared/constants';
 
 export async function hashPassword(password: string): Promise<string> {
   return bcrypt.hash(password, BCRYPT_COST);

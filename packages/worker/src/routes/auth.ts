@@ -3,9 +3,9 @@ import type { Env } from '../env';
 import { findUserByAccount, findUserByEmail, findUserByUsername, createUser } from '../db';
 import { signToken, storeSession, deleteSession } from '../utils/jwt';
 import { hashPassword, verifyPassword } from '../utils/password';
-import { isValidEmail, isValidUsername, isValidPassword, generateId } from '@tas/shared';
+import { isValidEmail, isValidUsername, isValidPassword, generateId } from '../utils/shared/utils';
+import type { RegisterRequest, LoginRequest, ApiResponse, LoginResponse } from '../utils/shared/api';
 import { authMiddleware, getAuthUser } from '../middleware/auth';
-import type { RegisterRequest, LoginRequest, ApiResponse, LoginResponse } from '@tas/shared';
 
 const auth = new Hono<{ Bindings: Env }>();
 

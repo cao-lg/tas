@@ -1,6 +1,6 @@
 import { SignJWT, jwtVerify } from 'jose';
-import type { JWTPayload, UserRole } from '@tas/shared';
-import { JWT_EXPIRY_SECONDS } from '@tas/shared';
+import type { JWTPayload, UserRole } from './shared/types';
+import { JWT_EXPIRY_SECONDS } from './shared/constants';
 import type { KVNamespace } from '@cloudflare/workers-types';
 
 export async function signToken(
