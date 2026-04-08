@@ -17,3 +17,6 @@ JWT_SECRET = "70d50176ad65b581483a36d02496e152b3d2f570928af2ffa14d4308ba46b7e6"
 
 [observability]
 enabled = true
+
+[build]
+external = ["@tas/shared"]
