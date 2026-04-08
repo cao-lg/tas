@@ -20,8 +20,25 @@ app.get('/', (c) => {
   });
 });
 
-app.get('/health', (c) => {
-  return c.json({ status: 'ok', timestamp: new Date().toISOString() });
+app.get('/health', async (c) => {
+  try {
+    // 测试数据库连接
+    const result = await c.env.DB.prepare('SELECT 1 as test').first();
+    return c.json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      database: 'connected',
+      test: result
+    });
+  } catch (error) {
+    console.error('Database connection error:', error);
+    return c.json({ 
+      status: 'ok', 
+      timestamp: new Date().toISOString(),
+      database: 'error',
+      error: error.message
+    });
+  }
 });
 
 app.route('/api/auth', authRoutes);
