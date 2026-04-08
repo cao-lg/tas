@@ -91,12 +91,11 @@ export default function Classes() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await apiFetch(`/api/classes/${joinCode}/join`, {
+      const response = await apiFetch(`/api/classes/code/${joinCode}/join`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
-        },
-        body: JSON.stringify({ code: joinCode })
+        }
       });
 
       const data = await response.json();

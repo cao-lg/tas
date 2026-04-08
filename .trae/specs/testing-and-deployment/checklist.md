@@ -37,6 +37,8 @@
 - [x] 角色权限检查正确实现 (admin 权限检查)
 - [x] 请求验证和错误处理完整
 - [x] 所有 API 端点返回正确的状态码和响应格式
+- [x] 新增 API 端点 `/api/classes/code/:code/join 实现完整
+- [x] 新增 API 端点 `/api/classes/:id/batch-import 实现完整
 
 ## 前端页面验证
 - [x] 登录页面 (Login.tsx) 完整实现
@@ -51,6 +53,9 @@
 - [x] 表单验证逻辑完整
 - [x] 错误处理和成功提示友好
 - [x] 加载状态和空状态处理正确
+- [x] ClassDetail.tsx 统一使用 apiFetch 函数
+- [x] 班级代码加入功能使用正确的 API 端点
+- [x] 批量导入学生 UI 界面完整实现
 
 ## 认证与权限验证
 - [x] AuthContext 正确实现登录/登出逻辑
@@ -67,6 +72,7 @@
 - [x] 密码加密工具正确 (使用 bcrypt)
 - [x] 数据库 CRUD 操作实现完整
 - [x] ID 生成和验证工具正确
+- [x] 批量导入学生类型定义完整
 
 ## 响应式布局验证
 - [x] Tailwind CSS 配置完整

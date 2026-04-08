@@ -145,3 +145,61 @@
   - `human-judgement` TR-9.3: 配置模板和占位符标记清晰
   - `human-judgement` TR-9.4: 回滚策略和应急措施完整
 - **Notes**: 良好的文档确保部署过程可重复、可追溯
+
+## [x] Task 10: 修复 ClassDetail.tsx 使用 apiFetch
+- **Priority**: P0
+- **Depends On**: None
+- **Description**: 
+  - 修复 ClassDetail.tsx 页面直接使用 fetch 的问题
+  - 统一使用 apiFetch 函数进行 API 调用
+  - 确保所有 API 调用都正确配置了 API_BASE_URL
+- **Acceptance Criteria Addressed**: AC-2
+- **Test Requirements**: 
+  - `human-judgement` TR-10.1: ClassDetail.tsx 导入并使用 apiFetch
+  - `human-judgement` TR-10.2: 所有 fetch 调用都替换为 apiFetch
+  - `human-judgement` TR-10.3: API 路径正确配置
+- **Notes**: 确保前端 API 调用一致使用配置的基础 URL
+
+## [x] Task 11: 添加通过班级代码查找班级的 API 端点
+- **Priority**: P0
+- **Depends On**: None
+- **Description**: 
+  - 在后端添加 `/api/classes/code/:code/join` 端点
+  - 允许学生直接通过班级代码加入班级
+  - 验证班级代码的有效性和用户权限
+- **Acceptance Criteria Addressed**: AC-2, AC-5
+- **Test Requirements**: 
+  - `human-judgement` TR-11.1: 新增 API 端点正确实现
+  - `human-judgement` TR-11.2: 班级代码验证逻辑完整
+  - `human-judgement` TR-11.3: 用户权限检查正确
+- **Notes**: 简化学生通过班级代码加入班级的流程
+
+## [x] Task 12: 修复前端班级代码加入功能
+- **Priority**: P0
+- **Depends On**: Task 11
+- **Description**: 
+  - 修改 Classes.tsx 中的 handleJoinClass 函数
+  - 使用新的 API 端点 `/api/classes/code/:code/join`
+  - 确保用户体验流畅
+- **Acceptance Criteria Addressed**: AC-3, AC-4
+- **Test Requirements**: 
+  - `human-judgement` TR-12.1: 前端调用正确的 API 端点
+  - `human-judgement` TR-12.2: 错误提示友好
+  - `human-judgement` TR-12.3: 加入成功后刷新班级列表
+- **Notes**: 修复班级代码加入功能的问题
+
+## [x] Task 13: 添加批量导入学生功能
+- **Priority**: P1
+- **Depends On**: None
+- **Description**: 
+  - 在 shared 包中添加批量导入学生的类型定义
+  - 在后端添加 `/api/classes/:id/batch-import` 端点
+  - 在前端添加批量导入 UI 界面
+  - 支持 CSV/TSV 格式导入学生
+- **Acceptance Criteria Addressed**: AC-2, AC-3, AC-4
+- **Test Requirements**: 
+  - `human-judgement` TR-13.1: 类型定义完整正确
+  - `human-judgement` TR-13.2: 后端 API 端点正确实现
+  - `human-judgement` TR-13.3: 前端 UI 界面友好易用
+  - `human-judgement` TR-13.4: 导入结果反馈清晰
+- **Notes**: 提高教师管理班级的效率

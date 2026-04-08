@@ -78,3 +78,30 @@ export interface UserListQuery {
   status?: import('./types').UserStatus;
   classId?: string;
 }
+
+export interface BatchImportStudentRequest {
+  students: Array<{
+    username: string;
+    email: string;
+    realName: string;
+    password?: string;
+  }>;
+}
+
+export interface BatchImportStudentResult {
+  total: number;
+  success: number;
+  failed: number;
+  errors: Array<{
+    index: number;
+    username: string;
+    email: string;
+    error: string;
+  }>;
+  importedStudents: Array<{
+    id: string;
+    username: string;
+    email: string;
+    realName: string;
+  }>;
+}

@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../config/api';
 
 interface ClassDetail {
   id: string;
@@ -32,6 +33,8 @@ export default function ClassDetail() {
   const [userIdentifier, setUserIdentifier] = useState('');
   const [memberRole, setMemberRole] = useState('student');
   const [editData, setEditData] = useState({ name: '', description: '', academicYear: '' });
+  const [showBatchImportModal, setShowBatchImportModal] = useState(false);
+  const [batchImportText, setBatchImportText] = useState('');
   const [error, setError] = useState('');
   const [success, setSuccess] = useState('');
 
@@ -42,7 +45,7 @@ export default function ClassDetail() {
   const fetchClassDetail = async () => {
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/classes/${id}`, {
+      const response = await apiFetch(`/api/classes/${id}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -76,7 +79,7 @@ export default function ClassDetail() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/classes/${id}/members`, {
+      const response = await apiFetch(`/api/classes/${id}/members`, {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -108,7 +111,7 @@ export default function ClassDetail() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/classes/${id}/members/${userId}`, {
+      const response = await apiFetch(`/api/classes/${id}/members/${userId}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -132,7 +135,7 @@ export default function ClassDetail() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/classes/${id}`, {
+      const response = await apiFetch(`/api/classes/${id}`, {
         method: 'PUT',
         headers: {
           'Authorization': `Bearer ${token}`,
@@ -160,7 +163,7 @@ export default function ClassDetail() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/classes/${id}`, {
+      const response = await apiFetch(`/api/classes/${id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
@@ -181,6 +184,58 @@ export default function ClassDetail() {
     if (classData) {
       navigator.clipboard.writeText(classData.code);
       setSuccess('班级代码已复制到剪贴板');
+    }
+  };
+
+  const handleBatchImport = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setError('');
+    setSuccess('');
+
+    if (!batchImportText.trim()) {
+      setError('请输入学生信息');
+      return;
+    }
+
+    try {
+      const lines = batchImportText.trim().split('\n');
+      const students = lines.map(line => {
+        const parts = line.split(/[,\t]/).map(s => s.trim());
+        return {
+          username: parts[0],
+          email: parts[1],
+          realName: parts[2],
+          password: parts[3]
+        };
+      }).filter(s => s.username && s.email && s.realName);
+
+      if (students.length === 0) {
+        setError('无法解析学生信息，请检查格式');
+        return;
+      }
+
+      const token = localStorage.getItem('tas_token');
+      const response = await apiFetch(`/api/classes/${id}/batch-import`, {
+        method: 'POST',
+        headers: {
+          'Authorization': `Bearer ${token}`,
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({ students })
+      });
+
+      const data = await response.json();
+
+      if (data.success) {
+        setSuccess(data.message);
+        setBatchImportText('');
+        setShowBatchImportModal(false);
+        fetchClassDetail();
+      } else {
+        setError(data.error || '导入失败');
+      }
+    } catch {
+      setError('网络错误');
     }
   };
 
@@ -220,17 +275,20 @@ export default function ClassDetail() {
           </p>
         </div>
         {classData.canManage && (
-          <div className="flex gap-3">
-            <button onClick={() => setShowEditModal(true)} className="btn btn-secondary">
-              编辑信息
-            </button>
-            {user?.role === 'admin' && (
-              <button onClick={handleDeleteClass} className="btn btn-danger">
-                删除班级
+            <div className="flex gap-3">
+              <button onClick={() => setShowBatchImportModal(true)} className="btn btn-secondary">
+                批量导入
               </button>
-            )}
-          </div>
-        )}
+              <button onClick={() => setShowEditModal(true)} className="btn btn-secondary">
+                编辑信息
+              </button>
+              {user?.role === 'admin' && (
+                <button onClick={handleDeleteClass} className="btn btn-danger">
+                  删除班级
+                </button>
+              )}
+            </div>
+          )}
       </div>
 
       {/* Messages */}
@@ -441,6 +499,49 @@ export default function ClassDetail() {
                 </button>
                 <button type="submit" className="btn btn-primary flex-1">
                   保存
+                </button>
+              </div>
+            </form>
+          </div>
+        </div>
+      )}
+
+      {/* Batch Import Modal */}
+      {showBatchImportModal && (
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 p-4">
+          <div className="card p-6 w-full max-w-2xl">
+            <h2 className="text-xl font-bold text-gray-900 mb-4">批量导入学生</h2>
+            
+            <form onSubmit={handleBatchImport} className="space-y-4">
+              <div>
+                <label className="block text-sm font-medium text-gray-700 mb-2">
+                  学生信息
+                </label>
+                <p className="text-sm text-gray-500 mb-2">
+                  每行一个学生，格式：用户名, 邮箱, 真实姓名, 密码（可选，默认123456）
+                  <br />
+                  支持逗号或制表符分隔
+                </p>
+                <textarea
+                  value={batchImportText}
+                  onChange={(e) => setBatchImportText(e.target.value)}
+                  className="input min-h-[200px] font-mono text-sm"
+                  placeholder="student1, student1@example.com, 张三
+student2, student2@example.com, 李四, password123
+..."
+                />
+              </div>
+
+              <div className="flex gap-3 pt-4">
+                <button
+                  type="button"
+                  onClick={() => setShowBatchImportModal(false)}
+                  className="btn btn-secondary flex-1"
+                >
+                  取消
+                </button>
+                <button type="submit" className="btn btn-primary flex-1">
+                  导入
                 </button>
               </div>
             </form>

@@ -38,8 +38,30 @@ auth.post('/register', async (c) => {
     return c.json<ApiResponse>({ success: false, error: '该用户名已被使用' }, 400);
   }
   
+  // 检查是否为管理员注册
+  if (body.role === 'admin') {
+    // 检查系统中是否已有管理员
+    const adminCount = await c.env.DB.prepare('SELECT COUNT(*) as count FROM users WHERE role = ?').bind('admin').first();
+    const hasAdmin = (adminCount?.count as number) > 0;
+    
+    if (hasAdmin) {
+      // 系统已有管理员，需要管理员权限
+      const authHeader = c.req.header('Authorization');
+      if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return c.json<ApiResponse>({ success: false, error: '注册管理员需要管理员权限' }, 403);
+      }
+      
+      const token = authHeader.slice(7);
+      const payload = await verifyToken(token, c.env.JWT_SECRET);
+      if (!payload || payload.role !== 'admin') {
+        return c.json<ApiResponse>({ success: false, error: '只有管理员可以创建管理员账号' }, 403);
+      }
+    }
+    // 如果系统中没有管理员，允许任何人创建第一个管理员
+  }
+  
   const passwordHash = await hashPassword(body.password);
-  const role = body.role === 'teacher' ? 'teacher' : 'student';
+  const role = body.role === 'teacher' || (body.role === 'admin' && body.role) ? body.role : 'student';
   
   const user = await createUser(c.env.DB, {
     id: generateId(),

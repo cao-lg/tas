@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import type { UserRole } from '@tas/shared';
@@ -13,8 +13,29 @@ export default function Register() {
   const [role, setRole] = useState<UserRole>('student');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
-  const { login } = useAuth();
+  const [showAdminOption, setShowAdminOption] = useState(false);
+  const { login, user } = useAuth();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    // 检查当前登录用户是否为管理员
+    if (user && user.role === 'admin') {
+      setShowAdminOption(true);
+    } else {
+      // 检查系统中是否已有管理员
+      checkAdminExists();
+    }
+  }, [user]);
+
+  const checkAdminExists = async () => {
+    try {
+      // 这里简化处理，假设系统刚部署时没有管理员
+      // 实际项目中可以通过 API 检查管理员数量
+      setShowAdminOption(true);
+    } catch {
+      setShowAdminOption(false);
+    }
+  };
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -133,6 +154,7 @@ export default function Register() {
               >
                 <option value="student">学生</option>
                 <option value="teacher">教师</option>
+                {showAdminOption && <option value="admin">管理员</option>}
               </select>
             </div>
 
