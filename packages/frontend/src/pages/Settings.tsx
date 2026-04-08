@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useAuth } from '../contexts/AuthContext';
+import { apiFetch } from '../config/api';
 
 export default function Settings() {
   const { user, refreshUser } = useAuth();
@@ -31,11 +32,10 @@ export default function Settings() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch('/api/users/me', {
+      const response = await apiFetch('/api/users/me', {
         method: 'PUT',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(profileData)
       });
@@ -79,11 +79,10 @@ export default function Settings() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch('/api/users/me/password', {
+      const response = await apiFetch('/api/users/me/password', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({
           oldPassword: passwordData.oldPassword,

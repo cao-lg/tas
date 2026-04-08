@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import type { Class } from '@tas/shared';
+import { apiFetch } from '../config/api';
 
 interface ClassWithRole extends Class {
   roleInClass: string;
@@ -28,7 +29,7 @@ export default function Classes() {
   const fetchClasses = async () => {
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch('/api/classes', {
+      const response = await apiFetch('/api/classes', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -55,11 +56,10 @@ export default function Classes() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch('/api/classes', {
+      const response = await apiFetch('/api/classes', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });
@@ -91,11 +91,10 @@ export default function Classes() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/classes/${joinCode}/join`, {
+      const response = await apiFetch(`/api/classes/${joinCode}/join`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ code: joinCode })
       });

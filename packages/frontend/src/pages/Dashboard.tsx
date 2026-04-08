@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../contexts/AuthContext';
 import type { Class } from '@tas/shared';
+import { apiFetch } from '../config/api';
 
 interface ClassWithRole extends Class {
   roleInClass: string;
@@ -25,7 +26,7 @@ export default function Dashboard() {
     try {
       const token = localStorage.getItem('tas_token');
       
-      const classesRes = await fetch('/api/classes', {
+      const classesRes = await apiFetch('/api/classes', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const classesData = await classesRes.json();
@@ -35,12 +36,12 @@ export default function Dashboard() {
       }
 
       if (user?.role === 'admin') {
-        const usersRes = await fetch('/api/users?pageSize=1', {
+        const usersRes = await apiFetch('/api/users?pageSize=1', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const usersData = await usersRes.json();
         
-        const appsRes = await fetch('/api/apps', {
+        const appsRes = await apiFetch('/api/apps', {
           headers: { 'Authorization': `Bearer ${token}` }
         });
         const appsData = await appsRes.json();

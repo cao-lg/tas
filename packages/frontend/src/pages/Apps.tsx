@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react';
 import type { Application, AppStatus } from '@tas/shared';
+import { apiFetch } from '../config/api';
 
 interface AppDisplay extends Omit<Application, 'appSecret'> {
   appSecret?: string;
@@ -27,7 +28,7 @@ export default function Apps() {
   const fetchApps = async () => {
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch('/api/apps', {
+      const response = await apiFetch('/api/apps', {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -53,11 +54,10 @@ export default function Apps() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch('/api/apps', {
+      const response = await apiFetch('/api/apps', {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify(formData)
       });
@@ -83,11 +83,10 @@ export default function Apps() {
     
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/apps/${app.id}/status`, {
+      const response = await apiFetch(`/api/apps/${app.id}/status`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ status: newStatus })
       });
@@ -110,7 +109,7 @@ export default function Apps() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/apps/${app.id}`, {
+      const response = await apiFetch(`/api/apps/${app.id}`, {
         method: 'DELETE',
         headers: { 'Authorization': `Bearer ${token}` }
       });
