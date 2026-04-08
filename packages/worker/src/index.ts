@@ -1,4 +1,5 @@
 import { Hono } from 'hono';
+import { cloudflareAdapter } from 'hono/adapter';
 import type { Env } from './env';
 import { corsMiddleware, optionsHandler } from './middleware/cors';
 import authRoutes from './routes/auth';
@@ -39,4 +40,4 @@ app.onError((err, c) => {
   return c.json({ success: false, error: '服务器内部错误' }, 500);
 });
 
-export default app.fetch;
+export default app;
