@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useAuth } from '../contexts/AuthContext';
 import type { User, UserRole, UserStatus } from '@tas/shared';
+import { apiFetch } from '../config/api';
 
 interface PaginatedUsers {
   items: User[];
@@ -39,7 +40,7 @@ export default function Users() {
       if (filters.role) params.append('role', filters.role);
       if (filters.status) params.append('status', filters.status);
 
-      const response = await fetch(`/api/users?${params}`, {
+      const response = await apiFetch(`/api/users?${params}`, {
         headers: { 'Authorization': `Bearer ${token}` }
       });
       const data = await response.json();
@@ -63,11 +64,10 @@ export default function Users() {
 
     try {
       const token = localStorage.getItem('tas_token');
-      const response = await fetch(`/api/users/${selectedUser.id}/status`, {
+      const response = await apiFetch(`/api/users/${selectedUser.id}/status`, {
         method: 'POST',
         headers: {
-          'Authorization': `Bearer ${token}`,
-          'Content-Type': 'application/json'
+          'Authorization': `Bearer ${token}`
         },
         body: JSON.stringify({ action })
       });

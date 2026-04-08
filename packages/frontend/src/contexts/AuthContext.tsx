@@ -1,7 +1,7 @@
 import { createContext, useContext, useState, useEffect, useCallback } from 'react';
 import type { User } from '@tas/shared';
 import type { AuthContextType } from '../types/auth';
-import { API_BASE_URL } from '../config/api';
+import { apiFetch } from '../config/api';
 
 const AuthContext = createContext<AuthContextType | null>(null);
 
@@ -33,7 +33,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
 
   const verifyToken = async (token: string) => {
     try {
-      const response = await fetch(`${API_BASE_URL}/api/verify`, {
+      const response = await apiFetch('/api/verify', {
         method: 'POST',
         headers: {
           'Authorization': `Bearer ${token}`
@@ -67,7 +67,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
   const logout = useCallback(async () => {
     if (token) {
       try {
-        await fetch(`${API_BASE_URL}/api/auth/logout`, {
+        await apiFetch('/api/auth/logout', {
           method: 'POST',
           headers: {
             'Authorization': `Bearer ${token}`
@@ -88,7 +88,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
     if (!token) return;
     
     try {
-      const response = await fetch(`${API_BASE_URL}/api/users/me`, {
+      const response = await apiFetch('/api/users/me', {
         headers: {
           'Authorization': `Bearer ${token}`
         }
