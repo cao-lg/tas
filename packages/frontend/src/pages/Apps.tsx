@@ -12,7 +12,7 @@ export default function Apps() {
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [showDetailModal, setShowDetailModal] = useState(false);
   const [selectedApp, setSelectedApp] = useState<AppDisplay | null>(null);
-  const [newAppSecret, setNewAppSecret] = useState('');
+  const [newApp, setNewApp] = useState<{ id: string; appKey: string; appSecret: string } | null>(null);
   const [formData, setFormData] = useState({
     name: '',
     description: '',
@@ -65,8 +65,12 @@ export default function Apps() {
       const data = await response.json();
 
       if (data.success) {
-        setNewAppSecret(data.data.appSecret);
-        setSuccess('应用创建成功！请保存 App Secret，此信息仅显示一次');
+        setNewApp({
+          id: data.data.id,
+          appKey: data.data.appKey,
+          appSecret: data.data.appSecret
+        });
+        setSuccess('应用创建成功！请保存以下信息，App Secret 仅显示一次');
         setFormData({ name: '', description: '', callbackUrl: '' });
         setShowCreateModal(false);
         fetchApps();
@@ -159,22 +163,65 @@ export default function Apps() {
         </div>
       )}
 
-      {newAppSecret && (
+      {newApp && (
         <div className="bg-yellow-50 border border-yellow-200 px-4 py-3 rounded-lg">
-          <p className="font-medium text-yellow-800 mb-2">新应用的 App Secret：</p>
-          <div className="flex items-center gap-2">
-            <code className="flex-1 bg-yellow-100 px-3 py-2 rounded font-mono text-sm break-all">
-              {newAppSecret}
-            </code>
+          <p className="font-medium text-yellow-800 mb-3">新应用信息：</p>
+          
+          <div className="space-y-3 mb-4">
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-yellow-800 w-24">App ID：</label>
+              <code className="flex-1 bg-yellow-100 px-3 py-2 rounded font-mono text-sm break-all">
+                {newApp.id}
+              </code>
+              <button
+                onClick={() => copyToClipboard(newApp.id, 'App ID')}
+                className="btn btn-secondary text-sm"
+              >
+                复制
+              </button>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-yellow-800 w-24">App Key：</label>
+              <code className="flex-1 bg-yellow-100 px-3 py-2 rounded font-mono text-sm break-all">
+                {newApp.appKey}
+              </code>
+              <button
+                onClick={() => copyToClipboard(newApp.appKey, 'App Key')}
+                className="btn btn-secondary text-sm"
+              >
+                复制
+              </button>
+            </div>
+            
+            <div className="flex items-center gap-2">
+              <label className="text-sm font-medium text-yellow-800 w-24">App Secret：</label>
+              <code className="flex-1 bg-yellow-100 px-3 py-2 rounded font-mono text-sm break-all">
+                {newApp.appSecret}
+              </code>
+              <button
+                onClick={() => copyToClipboard(newApp.appSecret, 'App Secret')}
+                className="btn btn-secondary text-sm"
+              >
+                复制
+              </button>
+            </div>
+          </div>
+          
+          <div className="flex justify-center mb-3">
             <button
-              onClick={() => copyToClipboard(newAppSecret, 'App Secret')}
-              className="btn btn-secondary text-sm"
+              onClick={() => {
+                const allInfo = `App ID: ${newApp.id}\nApp Key: ${newApp.appKey}\nApp Secret: ${newApp.appSecret}`;
+                copyToClipboard(allInfo, '所有信息');
+              }}
+              className="btn btn-primary text-sm"
             >
-              复制
+              一键复制全部
             </button>
           </div>
+          
           <p className="text-sm text-yellow-700 mt-2">
-            ⚠️ 请立即保存此密钥，关闭后将无法再次查看
+            ⚠️ 请立即保存这些信息，App Secret 仅显示一次
           </p>
         </div>
       )}
